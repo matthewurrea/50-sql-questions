@@ -144,22 +144,58 @@ ORDER BY No_Of_Workers DESC;
 
 --Q-24. Write an SQL query to print details of the Workers who are also Managers.
 
-SELECT 
+SELECT DISTINCT W.FIRST_NAME, T.WORKER_TITLE 
+FROM Worker W
+INNER JOIN Title T
+ON W.WORKER_ID = T.WORKER_REF_ID
+AND T.WORKER_TITLE in ('Manager');
 
 --Q-25. Write an SQL query to fetch duplicate records having matching data in some fields of a table.
---
+
+SELECT WORKER_TITLE, AFFECTED_FROM, COUNT(*)
+FROM Title
+GROUP BY WORKER_TITLE, AFFECTED_FROM
+HAVING COUNT(*) > 1;
+
 --Q-26. Write an SQL query to show only odd rows from a table.
---
+
+SELECT * 
+FROM Worker 
+WHERE MOD (WORKER_ID, 2) <> 0; 
+
 --Q-27. Write an SQL query to show only even rows from a table.
---
+
+SELECT *
+FROM Worker 
+WHERE MOD (WORKER_ID, 2) = 0;
+
 --Q-28. Write an SQL query to clone a new table from another table.
---
+
+--the general query to clone a table with data is:
+SELECT * INTO WorkerClone 
+FROM Worker;
+
+--the general way to clone a table without information is: 
+SELECT * INTO WorkerClone
+FROM Worker
+WHERE 1 = 0; 
+
+--an alternate way to clone a table (for MySQL) without is: 
+CREATE TABLE WorkerClone LIKE Worker;
+
 --Q-29. Write an SQL query to fetch intersecting records of two tables.
---
+(SELECT * FROM Worker)
+INTERSECT
+(SELECT * FROM WorkerClone)
+
 --Q-30. Write an SQL query to show records from one table that another table does not have.
---
+
+SELECT * FROM Worker 
+MINUS
+SELECT * FROM Title; 
+
 --Q-31. Write an SQL query to show the current date and time.
---
+
 --Q-32. Write an SQL query to show the top n (say 10) records of a table.
 --
 --Q-33. Write an SQL query to determine the nth (say n=5) highest salary from a table.
